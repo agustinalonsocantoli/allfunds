@@ -1,8 +1,8 @@
-import User from "../models/user.model"
-import { CreateUserValidation } from "../validators/users.validator"
-import { validateData } from "../services/validateData"
+import User from "../models/user.model.js"
+import { CreateUserValidation } from "../validators/users.validator.js"
+import { validateData } from "../services/validateData.js"
 
-export class UserControllers {
+export default class UserControllers {
     static async index(_req, res) {
         try {
             const users = await User.find()
@@ -35,20 +35,13 @@ export class UserControllers {
         }
     }
 
-    static async store(req, res) {
+    static async create(req, res) {
         try {
-            const { data, error } = validateData(CreateUserValidation, req.body)
+            const { data, error } = await validateData(CreateUserValidation, req.body)
 
             if (error) return res.status(400).json({ message: error.message, error: error.error })
 
-            const hashPassword = await argon2.hash(data.password)
-            const createData = {
-                ...data,
-                password: hashPassword
-            }
-
-            const user = await User.create(createData)
-            delete user.password
+            const user = await User.create(data)
 
             return res.status(200).json({
                 data: user
