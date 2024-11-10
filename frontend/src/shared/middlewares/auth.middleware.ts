@@ -11,4 +11,3 @@ export const getTokenAuth = async (
     data
 )
     .then((response) => response)
-    .catch((error) => error)

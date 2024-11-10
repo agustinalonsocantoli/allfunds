@@ -8,12 +8,16 @@ import { CardNews } from "../../components/CardNews"
 export const NewsIndex = () => {
     const [news, setNews] = useState<NewInt[]>()
     const [status, setStatus] = useState<StatusEnum>(StatusEnum.IDLE)
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
 
     useEffect(() => {
         if (status === StatusEnum.IDLE) {
             setStatus(StatusEnum.LOADING)
 
-            getNews()
+            getNews({
+                sortBy: "createdAt",
+                order: sortOrder
+            })
                 .then((response) => {
                     setNews(response?.data?.data)
                     setStatus(StatusEnum.SUCCESS)
@@ -23,39 +27,69 @@ export const NewsIndex = () => {
                     setStatus(StatusEnum.ERROR)
                 })
         }
-    }, [status])
+    }, [status, sortOrder])
 
     return (
         <Flex
             direction="column"
             py="100px"
             px="150px"
-            gap="80px"
+            gap="20px"
         >
-            {status === StatusEnum.SUCCESS ?
-                news?.map((n: NewInt) => (
-                    <CardNews
-                        {...n}
-                        refreshData={() => setStatus(StatusEnum.IDLE)}
-                    />
-                ))
-                : status === StatusEnum.ERROR ?
-                    <Text
-                        textAlign="center"
-                        fontSize="24px"
-                        fontWeight="700"
-                    >
-                        No se pudiron cargar las noticias
-                    </Text>
-                    :
-                    Array.from({ length: 4 }).map((_, index) => (
-                        <Skeleton
-                            h="516px"
-                            w="100%"
+            <Flex
+                w="100%"
+                justifyContent="end"
+            >
+                <select
+                    value={sortOrder}
+                    onChange={(e) => {
+                        setStatus(StatusEnum.IDLE)
+                        setSortOrder(e.target.value as 'asc' | 'desc')
+                    }}
+                    style={{
+                        padding: '10px',
+                        width: '200px',
+                        borderRadius: "4px",
+                        background: "transparent",
+                        border: "1px solid",
+                        borderColor: "#202020"
+                    }}
+                >
+                    <option value="desc">Más recientes primero</option>
+                    <option value="asc">Más antiguas primero</option>
+                </select>
+            </Flex>
+
+            <Flex
+                direction="column"
+                gap="80px"
+            >
+                {status === StatusEnum.SUCCESS ?
+                    news?.map((n: NewInt, index: number) => (
+                        <CardNews
+                            key={index}
+                            {...n}
+                            refreshData={() => setStatus(StatusEnum.IDLE)}
                         />
                     ))
-            }
-
+                    : status === StatusEnum.ERROR ?
+                        <Text
+                            textAlign="center"
+                            fontSize="24px"
+                            fontWeight="700"
+                        >
+                            No se pudiron cargar las noticias
+                        </Text>
+                        :
+                        Array.from({ length: 4 }).map((_, index) => (
+                            <Skeleton
+                                key={index}
+                                h="516px"
+                                w="100%"
+                            />
+                        ))
+                }
+            </Flex>
         </Flex >
     )
 }

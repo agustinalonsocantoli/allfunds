@@ -1,10 +1,12 @@
-import { Button, Flex, Image, Text } from "@chakra-ui/react"
+import { Box, Button, Flex, Image, Text } from "@chakra-ui/react"
 import { UserInt } from "../../../interfaces/UserInt";
 import { BiChevronRight, BiTrash } from "react-icons/bi";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { archivedNew, deleteNew } from "../../../shared/middlewares/new.middleware";
 import toast from "react-hot-toast";
+import { useUserContext } from "../../../shared/context/user.context";
+import { useState } from "react";
 
 interface Props {
     _id: string;
@@ -31,6 +33,8 @@ export const CardNews = ({
     createdAt,
     refreshData
 }: Props) => {
+    const { user } = useUserContext();
+    const [showTooltip, setShowTooltip] = useState<boolean>(false)
 
     const handleArchived = async (id: string) => {
         archivedNew(id)
@@ -136,21 +140,49 @@ export const CardNews = ({
                             alignItems="center"
                             gap="20px"
                         >
-                            <Button
-                                h="fit-content"
-                                w="fit-content"
-                                px="10px"
-                                py="5px"
-                                fontSize="16px"
-                                fontWeight="400"
-                                color="black"
-                                bg="white"
-                                border="1px solid"
-                                borderColor="black"
-                                onClick={() => handleDelete(_id)}
+                            <Box
+                                position="relative"
+                                onMouseEnter={() => setShowTooltip(true)}
+                                onMouseLeave={() => setShowTooltip(false)}
                             >
-                                <BiTrash />
-                            </Button>
+                                <Button
+                                    h="fit-content"
+                                    w="fit-content"
+                                    px="10px"
+                                    py="5px"
+                                    fontSize="16px"
+                                    fontWeight="400"
+                                    color="black"
+                                    bg="white"
+                                    border="1px solid"
+                                    borderColor="black"
+                                    disabled={!user?.auth || author?._id !== user?._id}
+                                    onClick={() => handleDelete(_id)}
+                                >
+                                    <BiTrash />
+                                </Button>
+
+                                <Text
+                                    display={(showTooltip && (!user.auth || author?._id !== user?._id)) ? "block" : "none"}
+                                    position="absolute"
+                                    w="fit-content"
+                                    whiteSpace="nowrap"
+                                    bottom={"40px"}
+                                    left="0"
+                                    bg="black"
+                                    color="white"
+                                    rounded="4px"
+                                    px={"10px"}
+                                    py="5px"
+                                    textAlign="center"
+                                    transition="all ease 0.3s"
+                                >
+                                    {!user.auth
+                                        ? "Primero debes iniciar sesión como Autor"
+                                        : "Debes ser el autor de la noticia para poder eliminarla"
+                                    }
+                                </Text>
+                            </Box>
 
                             <Text
                                 px="10px"

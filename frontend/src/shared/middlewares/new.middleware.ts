@@ -21,7 +21,6 @@ export const getNews = async (
         EndpointTypes.NEWS + parseQuerys,
     )
         .then((response) => response)
-        .catch((error) => error)
 }
 
 export const createNew = async (
@@ -46,7 +45,6 @@ export const createNew = async (
         formData
     )
         .then((response) => response)
-        .catch((error) => error)
 }
 
 export const archivedNew = async (id: string) =>
@@ -54,11 +52,9 @@ export const archivedNew = async (id: string) =>
         EndpointTypes.NEWS + "/" + id, { archived: true }
     )
         .then((response) => response)
-        .catch((error) => error)
 
 export const deleteNew = async (id: string) =>
     _axios.delete(
         EndpointTypes.NEWS + "/" + id
     )
         .then((response) => response)
-        .catch((error) => error)

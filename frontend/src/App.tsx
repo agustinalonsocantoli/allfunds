@@ -1,11 +1,11 @@
-import { BrowserRouter } from "react-router-dom"
+import { BrowserRouter, NavigateFunction } from "react-router-dom"
 import { ChakraProvider, defaultSystem, Flex } from "@chakra-ui/react"
 import { UserContext } from "./shared/context/user.context"
 import { UserInt } from "./interfaces/UserInt"
 import { useState } from "react"
 import { Navbar } from "./shared/components/Navbar/Navbar"
 import { RouterController } from "./shared/components/RouterController/RouterController"
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 
 
 function App() {
@@ -21,7 +21,7 @@ function App() {
   const login = (
     token: string,
     user: UserInt,
-    navigate: (path?: string) => void
+    navigate: NavigateFunction
   ) => {
     const saveUser: UserInt = {
       auth: true,
@@ -36,10 +36,11 @@ function App() {
 
     setUser(saveUser)
     navigate("/")
+    toast.success("Inicio de sesión exitoso")
   }
 
   const logout = (
-    navigate: (path?: string) => void
+    navigate: NavigateFunction
   ) => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -51,7 +52,9 @@ function App() {
       lastname: null,
       email: null,
     })
+
     navigate('/')
+    toast.error("Sesión cerrada")
   }
 
   return (

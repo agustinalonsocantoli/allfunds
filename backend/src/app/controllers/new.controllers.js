@@ -6,10 +6,10 @@ import { uploadImageCloudinary } from '../services/uploadImage.js'
 class NewControllers {
     static async index(req, res) {
         try {
-            const { sortBy = 'createdAt', sortOrder = 'desc', archives = false } = req.query
+            const { sortBy = 'createdAt', order = 'desc', archives = false } = req.query
 
             const news = await News.find(!archives ? { archiveDate: null } : { archiveDate: { $ne: null } })
-                .sort({ [sortBy]: sortOrder })
+                .sort({ [sortBy]: order })
                 .populate('author', ['name', 'lastname'])
 
             return res.status(200).json({

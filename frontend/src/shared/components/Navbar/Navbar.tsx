@@ -1,12 +1,16 @@
 import { Button, Flex, Link } from "@chakra-ui/react"
-import { Link as LinkRouter, useLocation } from 'react-router-dom'
+import { Link as LinkRouter, useLocation, useNavigate } from 'react-router-dom'
+import { useUserContext } from "../../context/user.context"
 
 export const Navbar = () => {
+    const { user, logout } = useUserContext()
     const location = useLocation()
+    const navigate = useNavigate()
 
     const links = [
-        { label: "New", path: "/" },
-        { label: "Arhived", path: "/archived" }
+        { label: "Nuevas", path: "/" },
+        { label: "Archivadas", path: "/archived" },
+        { label: "Publicar", path: "/create" }
     ]
 
     return (
@@ -18,14 +22,16 @@ export const Navbar = () => {
             alignItems="center"
             gap="100px"
         >
-            <Flex flex="1" />
+            <Flex w="30%" />
 
             <Flex
                 flex="1"
                 gap="40px"
             >
-                {links?.map(({ label, path }) => (
-                    <Link asChild
+                {links?.map(({ label, path }, index: number) => (
+                    <Link
+                        key={index}
+                        asChild
                         fontSize="16px"
                         fontWeight="400"
                         textDecoration="none"
@@ -64,8 +70,9 @@ export const Navbar = () => {
                 _hover={{
                     bg: "#E6E6E6"
                 }}
+                onClick={() => !user?.auth ? navigate('/login') : logout(navigate)}
             >
-                Post
+                {!user?.auth ? "Iniciar sesión" : "Cerrar sesión"}
             </Button>
         </Flex>
     )
