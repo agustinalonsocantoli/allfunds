@@ -41,7 +41,9 @@ export default class UserControllers {
 
             if (error) return res.status(400).json({ message: error.message, error: error.error })
 
-            const user = await User.create(data)
+            const createUser = await User.create(data)
+            const user = createUser.toObject()
+            delete user.password
 
             return res.status(200).json({
                 data: user

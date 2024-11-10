@@ -8,7 +8,7 @@ class NewControllers {
         try {
             const { sortBy = 'createdAt', sortOrder = 'desc', archives = false } = req.query
 
-            const news = await News.find(!archives ? { archiveDate: null } : {})
+            const news = await News.find(!archives ? { archiveDate: null } : { archiveDate: { $ne: null } })
                 .sort({ [sortBy]: sortOrder })
                 .populate('author', ['name', 'lastname'])
 
