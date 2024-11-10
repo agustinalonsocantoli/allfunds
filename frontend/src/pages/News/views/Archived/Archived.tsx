@@ -49,11 +49,12 @@ export const NewsArchived = () => {
                     }}
                     style={{
                         padding: '10px',
-                        width: '200px',
+                        width: '300px',
                         borderRadius: "4px",
                         background: "transparent",
                         border: "1px solid",
-                        borderColor: "#202020"
+                        borderColor: "#202020",
+                        textAlign: "center"
                     }}
                 >
                     <option value="desc">Más recientes primero</option>
