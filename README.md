@@ -88,3 +88,12 @@ The application has the following pages:
 - `POST /v1/news` - Create new news article (requires authentication token)
 - `PUT /v1/news/:id` - Archive news article with archived=true in body
 - `DELETE /v1/news/:id` - Delete news article (restricted to author only)
+
+## Developer notes (Desired Implementations)
+
+Points to add to the project for a better experience:
+- Implement role-based authentication in backend (User and Author roles)
+- Protect all routes with authentication middleware, except for registration route
+- Add user and author registration pages in frontend
+- Implement role-specific functionalities in frontend
+- Add responsive design in frontend

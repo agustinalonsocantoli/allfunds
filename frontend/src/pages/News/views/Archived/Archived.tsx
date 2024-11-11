@@ -80,7 +80,7 @@ export const NewsArchived = () => {
                             fontSize="24px"
                             fontWeight="700"
                         >
-                            No se pudiron cargar las noticias
+                            No se pudieron cargar las noticias
                         </Text>
                         :
                         Array.from({ length: 4 }).map((_, index) => (

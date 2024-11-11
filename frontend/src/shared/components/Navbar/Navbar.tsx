@@ -10,7 +10,6 @@ export const Navbar = () => {
     const links = [
         { label: "Nuevas", path: "/" },
         { label: "Archivadas", path: "/archived" },
-        { label: "Publicar", path: "/create" }
     ]
 
     return (
@@ -22,7 +21,7 @@ export const Navbar = () => {
             alignItems="center"
             gap="100px"
         >
-            <Flex w="30%" />
+            <Flex w="35%" />
 
             <Flex
                 flex="1"
@@ -56,24 +55,43 @@ export const Navbar = () => {
                 ))}
             </Flex>
 
-            <Button
-                bg="white"
-                color="black"
-                border="1px solid"
-                borderColor="black"
-                fontSize="16px"
-                fontWeight="400"
-                h="fit-content"
-                w="fit-content"
-                px="20px"
-                py="10px"
-                _hover={{
-                    bg: "#E6E6E6"
-                }}
-                onClick={() => !user?.auth ? navigate('/login') : logout(navigate)}
+            <Flex
+                alignItems="center"
+                gap="20px"
             >
-                {!user?.auth ? "Iniciar sesión" : "Cerrar sesión"}
-            </Button>
+                <Button
+                    bg="black"
+                    color="white"
+                    fontSize="16px"
+                    fontWeight="400"
+                    h="fit-content"
+                    w="fit-content"
+                    px="20px"
+                    py="10px"
+                    onClick={() => navigate('/create')}
+                >
+                    Publicar
+                </Button>
+
+                <Button
+                    bg="white"
+                    color="black"
+                    border="1px solid"
+                    borderColor="black"
+                    fontSize="16px"
+                    fontWeight="400"
+                    h="fit-content"
+                    w="fit-content"
+                    px="20px"
+                    py="10px"
+                    _hover={{
+                        bg: "#E6E6E6"
+                    }}
+                    onClick={() => !user?.auth ? navigate('/login') : logout(navigate)}
+                >
+                    {!user?.auth ? "Iniciar sesión" : "Cerrar sesión"}
+                </Button>
+            </Flex>
         </Flex>
     )
 }
